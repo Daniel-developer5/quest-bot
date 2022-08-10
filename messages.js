@@ -30,6 +30,12 @@ const trueCode = `
   <i>"Ха, ха, ха! Ми знаємо, що майже ніхто не вчить географію. Поки ви кажете, що вона вам не потрібна, училка розкопує вже другий клад!"</i>
 `
 
+const gettedEmojiText = (emoji, history) => `
+  Вітаю, ви отримали emoji: ${emoji}
+
+  Зібрані emojies: ${history}
+`
+
 module.exports = {
   start: removeTabs(start),
   code: 'Надішліть ваш код:',
@@ -43,4 +49,6 @@ module.exports = {
   invalidTeamKey: 'Невалідний код команди, введіть ще раз:',
   getTeamKey: '\nНадішліть колір команди:',
   noTeamKey: 'Ви не надіслали колір команди, надішліть колір команди:',
+  newTeam: 'Вітаю в грі! Проходьте локації за наданою хронологією.',
+  gettedEmoji: (emoji, history) => removeTabs(gettedEmojiText(emoji, history))
 }

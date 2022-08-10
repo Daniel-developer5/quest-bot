@@ -11,7 +11,7 @@ const locations = JSON.parse(process.env.locations)
 bot.onText(/\/start/, ({ chat }) => {
   bot.sendMessage(
     chat.id,
-    messages.start + (!state.teamKey ? messages.getTeamKey : '')
+    messages.start + (!state.teams[chat.id] ? messages.getTeamKey : '')
   )
 })
 
@@ -51,10 +51,11 @@ const waitForTeamKey = msg => {
       isWaitForLocation: false,
       locationCode: null,
       teamKey: msg.text,
+      emojiHistory: '',
     }
 
     console.log(state.teams)
-    bot.sendMessage(msg.chat.id, 'saved')
+    bot.sendMessage(msg.chat.id, messages.newTeam)
   } else {
     bot.sendMessage(msg.chat.id, messages.invalidTeamKey)
   }
@@ -86,7 +87,8 @@ const waitForLocationCode = msg => {
   const emoji = team.emojies[activeTeam.locationCode - 1]
 
   if (msg.text.toLowerCase() === code.toLowerCase()) {
-    bot.sendMessage(id, emoji)
+    state.teams[id].emojiHistory += emoji
+    bot.sendMessage(id, messages.gettedEmoji(emoji, state.teams[id].emojiHistory))
     state.teams[id].locationCode = null
   } else {
     bot.sendMessage(id, messages.invalidLocationCode)
@@ -143,3 +145,4 @@ app.listen(PORT)
 
 
 // TODO: Add feature to log into existing team with saved history
+// TODO: Troll code
