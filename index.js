@@ -30,7 +30,7 @@ bot.onText(/^\/emoji/, ({ chat }) => {
   state.teams[chat.id].isWaitForLocation = true
 })
 
-bot.onText(/^\/log-out/, ({ chat }) => {
+bot.onText(/^\/log_out/, ({ chat }) => {
   delete state.teams[chat.id]
 })
 
