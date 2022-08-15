@@ -36,6 +36,16 @@ const gettedEmojiText = (emoji, history) => `
   Зібрані emojies: ${history}
 `
 
+const task = `
+  😛 * 😉 = 6
+  😉 < 😛
+  🙃 * (🙃 * 🙃) * 🙃 = 1
+  (🙃 + 😉 + 😛) * 🧐 = 30
+  😳 + 🧐 - 😛 = 9
+
+  😛 * 🧐 - 😳 + 🙃 - 😉 * 😉 + 🙃 = ?
+`
+
 module.exports = {
   start: removeTabs(start),
   code: 'Надішліть ваш код:',
@@ -49,6 +59,10 @@ module.exports = {
   invalidTeamKey: 'Невалідний код команди, введіть ще раз:',
   getTeamKey: '\nНадішліть колір команди:',
   noTeamKey: 'Ви не надіслали колір команди, надішліть колір команди:',
-  newTeam: 'Вітаю в грі! Проходьте локації за наданою хронологією.',
-  gettedEmoji: (emoji, history) => removeTabs(gettedEmojiText(emoji, history))
+  newTeam: 'Вітаю в грі! Проходьте локації за наданою хронологією. /emoji',
+  gettedEmoji: (emoji, history) => removeTabs(gettedEmojiText(emoji, history)),
+  wantTask: 'хочу задачу',
+  task: removeTabs,
+  noPhoto: 'no photo, введіть комадну /emoji, щоб повторити спробу.',
+  repetedEmoji: 'you have already got this emoji, /emoji',
 }

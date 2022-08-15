@@ -30,6 +30,10 @@ bot.onText(/^\/emoji/, ({ chat }) => {
   state.teams[chat.id].isWaitForLocation = true
 })
 
+bot.onText(/^\/log-out/, ({ chat }) => {
+  delete state.teams[chat.id]
+})
+
 // const errCode = (id, message = messages.noCode) => {
 //   bot.sendMessage(id, message)
 //   state.isWaitForCode = false
@@ -54,7 +58,6 @@ const waitForTeamKey = msg => {
       emojiHistory: '',
     }
 
-    console.log(state.teams)
     bot.sendMessage(msg.chat.id, messages.newTeam)
   } else {
     bot.sendMessage(msg.chat.id, messages.invalidTeamKey)
@@ -86,6 +89,27 @@ const waitForLocationCode = msg => {
   const code = String(team.codes[activeTeam.locationCode - 1])
   const emoji = team.emojies[activeTeam.locationCode - 1]
 
+  if (state.teams[id]) {
+    if (state.teams[id].emojiHistory.includes(emoji)) {
+      state.teams[id].locationCode = null
+      bot.sendMessage(id, messages.repetedEmoji)
+      return
+    }
+  }
+
+  if (code === 'troll') {
+    if (msg.photo) {
+      state.teams[id].emojiHistory += emoji
+      bot.sendMessage(id, messages.gettedEmoji(emoji, state.teams[id].emojiHistory))
+      state.teams[id].locationCode = null
+    } else {
+      bot.sendMessage(id, messages.noPhoto)
+      state.teams[id].locationCode = null
+    }
+
+    return
+  }
+
   if (msg.text.toLowerCase() === code.toLowerCase()) {
     state.teams[id].emojiHistory += emoji
     bot.sendMessage(id, messages.gettedEmoji(emoji, state.teams[id].emojiHistory))
@@ -98,6 +122,12 @@ const waitForLocationCode = msg => {
 
 bot.on('message', msg => {
   const { id } = msg.chat
+
+  if (msg.text) {
+    if (msg.text.toLowerCase() === messages.wantTask) {
+      bot.sendPhoto(msg.chat.id, './public/images/task.jpeg')
+    }
+  }
 
   if (!state.teams[id]) {
     waitForTeamKey(msg)
@@ -146,3 +176,5 @@ app.listen(PORT)
 
 // TODO: Add feature to log into existing team with saved history
 // TODO: Troll code
+
+// bot.on('polling_error', console.log)
