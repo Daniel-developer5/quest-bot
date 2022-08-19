@@ -173,8 +173,4 @@ app.use(express.static('public'))
 
 app.listen(PORT)
 
-
-// TODO: Add feature to log into existing team with saved history
-// TODO: Troll code
-
 // bot.on('polling_error', console.log)
